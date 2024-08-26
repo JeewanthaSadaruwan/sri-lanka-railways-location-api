@@ -10,13 +10,16 @@
    
 2. **Install dependencies:**
    ```bash
-    npm install
+   npm install
    ```
 4. **Set up environment variables:**
    ```bash
-    MONGO_URI=mongodb://localhost:27017/railways
+   MONGO_URI=mongodb://localhost:27017/railways
+   ```
+   ```bash
+   PORT=5000
    ```
 5. **Start the application:**
    ```bash
-    npm start
+   npm start
    ```
