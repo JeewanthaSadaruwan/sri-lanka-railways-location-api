@@ -14,9 +14,8 @@ module.exports = {
                 latitude: { type: 'number' },
                 longitude: { type: 'number' },
                 speed: { type: 'number' },
-                direction: { type: 'string' },
               },
-              required: ['trainId', 'latitude', 'longitude', 'speed', 'direction'],
+              required: ['trainId', 'latitude', 'longitude', 'speed'],
             },
           },
         },
@@ -52,26 +51,6 @@ module.exports = {
       tags: ['Location'],
       parameters: [
         { in: 'query', name: 'trainId', schema: { type: 'string' } },
-        { in: 'query', name: 'startDate', schema: { type: 'string', format: 'date' } },
-        { in: 'query', name: 'endDate', schema: { type: 'string', format: 'date' } },
-      ],
-      responses: {
-        200: { description: 'Success' },
-        500: { description: 'Internal server error' },
-      },
-    },
-  },
-  '/routes/{trainId}': {
-    get: {
-      summary: 'Get route of a specific train within a date range',
-      tags: ['Location'],
-      parameters: [
-        {
-          in: 'path',
-          name: 'trainId',
-          required: true,
-          schema: { type: 'string' },
-        },
         { in: 'query', name: 'startDate', schema: { type: 'string', format: 'date' } },
         { in: 'query', name: 'endDate', schema: { type: 'string', format: 'date' } },
       ],
