@@ -37,4 +37,14 @@ exports.getLocations = async (req, res) => {
   }
 };
 
+// Fetch location history logs
+exports.getLocationHistory = async (req, res) => {
+  try {
+    const history = await locationService.getLocationHistory();
+    res.status(200).json(history);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 
