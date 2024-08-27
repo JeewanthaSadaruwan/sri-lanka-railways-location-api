@@ -1,10 +1,26 @@
 const Location = require('../models/locationModel');
+const LocationHistory = require('../models/locationHistoryModel');
 const cron = require('node-cron');
+
+// Helper function to save location history log
+const saveLocationHistory = async (locationData) => {
+  const history = new LocationHistory({
+    trainId: locationData.trainId,
+    latitude: locationData.latitude,
+    longitude: locationData.longitude,
+    timestamp: locationData.timestamp,
+    speed: locationData.speed,
+    createdAt: new Date(),
+  });
+  await history.save();
+};
 
 // Create a new location
 exports.createLocation = async (locationData) => {
   const location = new Location(locationData);
-  return await location.save();
+  await location.save();
+  await saveLocationHistory(locationData); // Save location creation history log
+  return location;
 };
 
 // Get current location
@@ -26,8 +42,13 @@ exports.getLocations = async (filters) => {
   return await Location.find(query);
 };
 
-// Run cleanup job every minute
+// Fetch all location history logs
+exports.getLocationHistory = async () => {
+  return await LocationHistory.find().sort({ createdAt: -1 }); // Sort by latest first
+};
 
+// Run cleanup job every minute
+/*
 // Function to get the current time in Sri Lankan timezone (UTC+5:30)
 const getSriLankanTime = () => {
     const now = new Date();
@@ -46,23 +67,26 @@ cron.schedule('* * * * *', async () => {
       console.error('Error cleaning up old location history records:', error);
     }
   });
+*/
 
-// // Function to get the current time in Sri Lankan timezone (UTC+5:30)
-// const getSriLankanTime = () => {
-//     const now = new Date();
-//     now.setMinutes(now.getMinutes() + 330); // Add 330 minutes (5 hours 30 minutes) to convert UTC to SLT
-//     return now;
-//   };
+// Function to get the current time in Sri Lankan timezone (UTC+5:30)
+/*
+const getSriLankanTime = () => {
+    const now = new Date();
+    now.setMinutes(now.getMinutes() + 330); // Add 330 minutes (5 hours 30 minutes) to convert UTC to SLT
+    return now;
+  };
   
-//   // Run cleanup job every day at midnight
-//   cron.schedule('0 0 * * *', async () => {
-//     const ninetyDaysAgo = getSriLankanTime();
-//     ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90); // Subtract 90 days
+  // Run cleanup job every day at midnight
+  cron.schedule('0 0 * * *', async () => {
+    const ninetyDaysAgo = getSriLankanTime();
+    ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90); // Subtract 90 days
     
-//     try {
-//       await LocationHistory.deleteMany({ timestamp: { $lt: ninetyDaysAgo } });
-//       console.log('Cleaned up old location history records older than 90 days.');
-//     } catch (error) {
-//       console.error('Error cleaning up old location history records:', error);
-//     }
-//   });
+    try {
+      await LocationHistory.deleteMany({ timestamp: { $lt: ninetyDaysAgo } });
+      console.log('Cleaned up old location history records older than 90 days.');
+    } catch (error) {
+      console.error('Error cleaning up old location history records:', error);
+    }
+  });
+  */
