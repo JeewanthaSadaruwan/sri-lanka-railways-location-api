@@ -56,4 +56,4 @@ This Node.js application serves as a RESTful API for Sri Lanka Railways, handlin
 The application automatically deletes location data older than 90 days, managed by a cron job running daily at midnight.
 
 License
-This project is licensed under the MIT License. See the LICENSE file for details.
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/A-Samod/sri-lanka-railways-location-api?tab=MIT-1-ov-file#readme) file for details.
